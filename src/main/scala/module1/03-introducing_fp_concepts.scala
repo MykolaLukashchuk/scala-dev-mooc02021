@@ -93,12 +93,12 @@ object List {
      * Метод cons, добавляет элемент в голову списка, для этого метода можно воспользоваться названием `::`
      *
      */
-    //     def cons[B <: T](head: B): List[T] = this match {
-    //       case ::(_, _) => list.::(head, this)
-    //       case Nil => list.::(head, Nil)
-    //     }
+         def cons[B >: T](head: B): List[B] = this match {
+           case ::(_, _) => List.::(head, this)
+           case Nil => List.::(head, Nil)
+         }
 
-    //     def ::(head: T): List[T] = List ::(head, this)
+         def ::[B >: T](head: B): List[B] = cons(head)
 
     /**
      * Метод mkString возвращает строковое представление списка, с учетом переданного разделителя
@@ -143,12 +143,12 @@ object List {
     def map[B](f: T => B): List[B] = {
       @tailrec
       def loop(target: List[T], result: List[B]): List[B] = target match {
-        case ::(head, tail) => loop(tail, ::(f(head), result))
+        case ::(head, tail) => loop(tail, List.::(f(head), result))
         case Nil => result
       }
 
       this match {
-        case ::(head, tail) => loop(tail, ::(f(head), Nil))
+        case ::(head, tail) => loop(tail, List.::(f(head), Nil))
         case Nil => Nil
       }
     }
